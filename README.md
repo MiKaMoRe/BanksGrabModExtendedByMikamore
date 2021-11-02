@@ -1,6 +1,5 @@
 # GTA V
 ## BanksGrabModExtendedByMikamore
-Extended mod
 Author of native mod version: [Rodney_McKey](https://users.playground.ru/860254/)
 
 This is extended version of BanksGrabMod
