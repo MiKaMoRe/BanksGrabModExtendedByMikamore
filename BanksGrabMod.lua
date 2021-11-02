@@ -4,50 +4,69 @@ local timeMaxNotGrab = 20
 
 local bankData = {
       {
-             timerNotGrab = 0,
+             timerNotGrab = 0, -- Банк в Палето-бей
+             coord = {-103.434, 6478.280, 31.60},
+             money = {2000,10000},
+             money_devided_into = 10,
+             stars = 2,
+             ped = {
+                     {-105.93,6470.80,31.04,141.80,"weapon_pistol"},
+                     {-103.70,6465.80,31.04,49.06,"WEAPON_ADVANCEDRIFLE"}
+                   }
+      },
+      {
+             timerNotGrab = 0, -- Fleeca банк, Бретон
              coord = {-353.434, -54.280, 49.037},
-             money = {100000,500000},
+             money = {9000,25000},
+             money_devided_into = 10,
              stars = 3,
              ped = {
                      {-355.93,-46.80,49.04,243.80,"weapon_pistol"},
-                     {-357.70,-52.80,49.04,320.06,"WEAPON_ADVANCEDRIFLE"}
+                     {-357.70,-52.80,49.04,320.06,"WEAPON_ADVANCEDRIFLE"},
+                     {-347.70,-52.80,49.04,75.06,"WEAPON_ADVANCEDRIFLE"}
                    }
       },
       {
-             timerNotGrab = 0,
+             timerNotGrab = 0, -- Пиллбокс-хилл
              coord = {147.434, -1045.106, 29.363},
-             money = {100000,500000},
-             stars = 3,
+             money = {25000,100000},
+             money_devided_into = 10,
+             stars = 4,
              ped = {
                      {144.90,-1037.38,29.37,242.80,"weapon_pistol"},
-                     {152.27,-1041.64,29.37,27.00,"WEAPON_ADVANCEDRIFLE"}
+                     {152.27,-1041.64,29.37,27.00,"WEAPON_ADVANCEDRIFLE"},
+                     {142.27,-1044.64,29.37,341.00,"WEAPON_ADVANCEDRIFLE"}
                    }
       },
       {
-             timerNotGrab = 0,
+             timerNotGrab = 0, -- Fleeca банк, Рокфорд-хиллз
              coord = {-1211.21, -335.52, 37.78},
-             money = {100000,500000},
+             money = {9000,25000},
+             money_devided_into = 10,
              stars = 3,
              ped = {
                      {-1218.67,-331.53,37.38,267.03,"weapon_pistol"},
-                     {-1213.81,-336.66,37.78,107.54,"WEAPON_ADVANCEDRIFLE"}
+                     {-1213.81,-336.66,37.78,107.54,"WEAPON_ADVANCEDRIFLE"},
+                     {-1211.81,-327.66,37.78,122.54,"WEAPON_ADVANCEDRIFLE"}
                    }
       },
       {
-             timerNotGrab = 0,
+             timerNotGrab = 0, -- Fleeca банк, Альта
              coord = {311.724, -283.415, 54.165},
-             money = {100000,500000},
-             stars = 3,
+             money = {25000,100000},
+             money_devided_into = 10,
+             stars = 4,
              ped = {
                      {316.65,-280.03,54.17,5.03,"weapon_pistol"},
-                     {309.31,-275.26,54.17,240.70,"weapon_pistol"},
+                     {309.31,-275.26,54.17,240.70,"WEAPON_ADVANCEDRIFLE"},
                      {309.54,-282.35,54.16,54.24,"WEAPON_ADVANCEDRIFLE"}
                    }
       },
       {
-             timerNotGrab = 0,
+             timerNotGrab = 0, -- Fleeca банк, Каньон Бэнхэм
              coord = {-2957.724, 481.953, 15.693},
-             money = {100000,500000},
+             money = {9000,25000},
+             money_devided_into = 10,
              stars = 3,
              ped = {
                      {-2962.64,485.76,15.70,148.89,"weapon_pistol"},
@@ -56,10 +75,11 @@ local bankData = {
                    }
       },
       {
-             timerNotGrab = 0,
+             timerNotGrab = 0, -- Fleeca банк, Пустыня Гранд-Сенора
              coord = {1175.94, 2711.70, 38.09},
-             money = {100000,500000},
-             stars = 3,
+             money = {2000,10000},
+             money_devided_into = 10,
+             stars = 2,
              ped = {
                      {1172.34,2706.57,38.09,239.29,"weapon_pistol"},
                      {1180.58,2704.84,38.09,77.56,"weapon_pistol"},
@@ -67,10 +87,11 @@ local bankData = {
                    }
       },
       {
-             timerNotGrab = 0,
+             timerNotGrab = 0, -- Центр Вайнвуд
              coord = {264.6, 213.5, 102.5},
-             money = {500000,1500000},
-             stars = 4,
+             money = {100000,500000},
+             money_devided_into = 10,
+             stars = 5,
              ped = {
                      {237.26,212.16,106.29,15.36,"weapon_pistol"},
                      {238.28,226.91,106.29,138.90,"weapon_pistol"},
@@ -78,7 +99,7 @@ local bankData = {
                      {260.70,221.07,106.29,58.35,"weapon_pistol"},
                      {261.05,212.02,110.28,89.27,"weapon_pistol"},
                      {258.26,206.39,106.28,250.77,"weapon_pistol"},
-                     {260.99,215.62,106.28,247.57,"weapon_pistol"},
+                     {260.99,215.62,106.28,247.57,"WEAPON_ADVANCEDRIFLE"},
                      {264.73,219.93,101.68,295.42,"WEAPON_ADVANCEDRIFLE"},
                      {259.70,223.60,101.68,338.25,"WEAPON_ADVANCEDRIFLE"},
                      {252.58,227.20,101.68,253.95,"WEAPON_ADVANCEDRIFLE"}
