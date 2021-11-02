@@ -117,7 +117,10 @@ local Stage = {
       money = 0
 }
 
-
+function round(exact, quantum)
+    local quant,frac = math.modf(exact/quantum)
+    return quantum * (quant + (frac > 0.5 and 1 or 0))
+end
 
 local function saveDatas ()
  local file = io.open("scripts/addins/BanksGrabModConfig.txt","w");
@@ -221,7 +224,6 @@ local function deletePed (i)
             peds[i][2] = {}
          end 
 end
-
 
 local function customGetsLocation (location,distance)
  local bB = 0
@@ -329,8 +331,27 @@ function BanksGrabMod.tick()
           PLAYER.SET_PLAYER_WANTED_LEVEL_NOW(player,false)  
           Stage.modelPl = {playerPed,model}
           Stage.bankID = i
-          Stage.money = math.random(bank.money[1],bank.money[2])
-          notify("Вы взяли деньги, скройтесь от полиции.")    
+          local moneys = math.random(bank.money[1],bank.money[2])
+          local parts = bankData[i].money_devided_into
+          local part_of_money = round(moneys / parts, 1)
+          notify("Оставайтесь на в хранилище, чтобы собрать еще денег.")
+
+          while parts > 0 do
+            local player_coords = ENTITY.GET_ENTITY_COORDS( playerPed, nil )
+            local distance = GAMEPLAY.GET_DISTANCE_BETWEEN_COORDS( bank.coord[1],bank.coord[2],bank.coord[3], player_coords.x, player_coords.y, player_coords.z, true )
+
+            if (distance > 3) then
+                break
+            end
+
+            Stage.money = Stage.money + part_of_money
+            notify("+ $"..(part_of_money))
+            notify("Вы собрали $"..Stage.money)
+            parts = parts - 1
+            wait(3000)
+          end
+
+          notify("Вы взяли $"..Stage.money..", скройтесь от полиции.")    
           saveDatas ()
        end
     end         
