@@ -7,7 +7,7 @@ This is extended version of BanksGrabMod
 ## What is new?
 * Paleto-Bay bank added
 * Grabbing proccess added
-* * Now when you start robbery you need a time to grab more money
+  * Now when you start robbery you need a time to grab more money
 ## How to install?
 * Install **Script Hook V**
 * Install **Script Hook V .NET**
