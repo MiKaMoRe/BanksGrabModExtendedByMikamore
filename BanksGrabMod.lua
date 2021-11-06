@@ -1,13 +1,15 @@
 ﻿local BanksGrabMod = {}
 local skins = {"s_m_m_armoured_01","s_m_m_armoured_02","s_m_m_security_01"}
-local timeMaxNotGrab = 20 
+local timeMaxNotGrab = 1
+local bill = 100
+local billsInWad = 50 
+local timeToGrabPartOfMoney = 3000 -- Time to grab every part of money
 
 local bankData = {
       {
-             timerNotGrab = 0, -- Банк в Палето-бей
+             timerNotGrab = 0, -- Bank Plaleto-Bay
              coord = {-103.434, 6478.280, 31.60},
              money = {2000,10000},
-             money_devided_into = 10,
              stars = 2,
              ped = {
                      {-105.93,6470.80,31.04,141.80,"weapon_pistol"},
@@ -15,22 +17,20 @@ local bankData = {
                    }
       },
       {
-             timerNotGrab = 0, -- Fleeca банк, Бретон
+             timerNotGrab = 0, -- Fleeca Bank Berton
              coord = {-353.434, -54.280, 49.037},
              money = {9000,25000},
-             money_devided_into = 10,
              stars = 3,
              ped = {
                      {-355.93,-46.80,49.04,243.80,"weapon_pistol"},
                      {-357.70,-52.80,49.04,320.06,"WEAPON_ADVANCEDRIFLE"},
-                     {-347.70,-52.80,49.04,75.06,"WEAPON_ADVANCEDRIFLE"}
+                     {-348.70,-52.00,49.04,75.06,"WEAPON_ADVANCEDRIFLE"}
                    }
       },
       {
-             timerNotGrab = 0, -- Пиллбокс-хилл
+             timerNotGrab = 0, -- Bank Pillbox-Hill
              coord = {147.434, -1045.106, 29.363},
              money = {25000,100000},
-             money_devided_into = 10,
              stars = 4,
              ped = {
                      {144.90,-1037.38,29.37,242.80,"weapon_pistol"},
@@ -39,10 +39,9 @@ local bankData = {
                    }
       },
       {
-             timerNotGrab = 0, -- Fleeca банк, Рокфорд-хиллз
+             timerNotGrab = 0, -- Fleeca Bank, Rockford-Hills
              coord = {-1211.21, -335.52, 37.78},
              money = {9000,25000},
-             money_devided_into = 10,
              stars = 3,
              ped = {
                      {-1218.67,-331.53,37.38,267.03,"weapon_pistol"},
@@ -51,10 +50,9 @@ local bankData = {
                    }
       },
       {
-             timerNotGrab = 0, -- Fleeca банк, Альта
+             timerNotGrab = 0, -- Fleeca Bank, Alta
              coord = {311.724, -283.415, 54.165},
              money = {25000,100000},
-             money_devided_into = 10,
              stars = 4,
              ped = {
                      {316.65,-280.03,54.17,5.03,"weapon_pistol"},
@@ -66,7 +64,6 @@ local bankData = {
              timerNotGrab = 0, -- Fleeca банк, Каньон Бэнхэм
              coord = {-2957.724, 481.953, 15.693},
              money = {9000,25000},
-             money_devided_into = 10,
              stars = 3,
              ped = {
                      {-2962.64,485.76,15.70,148.89,"weapon_pistol"},
@@ -78,7 +75,6 @@ local bankData = {
              timerNotGrab = 0, -- Fleeca банк, Пустыня Гранд-Сенора
              coord = {1175.94, 2711.70, 38.09},
              money = {2000,10000},
-             money_devided_into = 10,
              stars = 2,
              ped = {
                      {1172.34,2706.57,38.09,239.29,"weapon_pistol"},
@@ -90,7 +86,6 @@ local bankData = {
              timerNotGrab = 0, -- Центр Вайнвуд
              coord = {264.6, 213.5, 102.5},
              money = {100000,500000},
-             money_devided_into = 10,
              stars = 5,
              ped = {
                      {237.26,212.16,106.29,15.36,"weapon_pistol"},
@@ -239,7 +234,7 @@ local function customGetsLocation (location,distance)
            local tS = (tTable.timerNotGrab - GAMEPLAY.GET_GAME_TIMER()) / 1000
            local tM = math.floor(tS / 60) 
            local tS = math.floor(tS - (tM*60) )
-           drawText("Дождитесь пока шумиха утихнет. Еще "..tM..":"..tS.." ", 0.5, 0.5, 0.7)
+           drawText("Wait until this blows over. Еще "..tM..":"..tS.." ", 0.5, 0.5, 0.7)
         end
         if blips[i] ~= 0 then
            UI.REMOVE_BLIP(blips[i]);
@@ -276,7 +271,7 @@ local function customGetsLocation (location,distance)
                   PLAYER.SET_PLAYER_WANTED_LEVEL(player,tTable.stars,false)
                   PLAYER.SET_PLAYER_WANTED_LEVEL_NOW(player,false)
               end
-              drawText("Вас опознали как грабителя.", 0.45, 0.5, 0.7)
+              drawText("Identified as a robber.", 0.45, 0.5, 0.7)
            end 
          end
      elseif (distanceR > 80 ) then
@@ -292,7 +287,7 @@ local function customGetsLocation (location,distance)
                    end
                 end
                 if bankData[#bankData].timerNotGrab == 0 then
-                   drawText("Взорвите хранилище внизу. Успейте забежать в него.", 0.5, 0.5, 0.7)
+                   drawText("Explode the vault. Hurry up to run into it.", 0.5, 0.5, 0.7)
                 end
      end
      if (distanceR < distance ) then
@@ -321,7 +316,7 @@ function BanksGrabMod.tick()
               PLAYER.SET_PLAYER_WANTED_LEVEL(player,bank.stars,false)
               PLAYER.SET_PLAYER_WANTED_LEVEL_NOW(player,false)
           end
-          notify("Они высылают полицию, денег в хранилище нет.")
+          notify("They are calling to police. No money in the vault.")
        elseif GAMEPLAY.GET_GAME_TIMER() > bank.timerNotGrab then
 	      Stage.state = 1
           bankData[i].timerNotGrab = GAMEPLAY.GET_GAME_TIMER() + (timeMaxNotGrab*60000)
@@ -331,10 +326,10 @@ function BanksGrabMod.tick()
           PLAYER.SET_PLAYER_WANTED_LEVEL_NOW(player,false)  
           Stage.modelPl = {playerPed,model}
           Stage.bankID = i
-          local moneys = math.random(bank.money[1],bank.money[2])
-          local parts = bankData[i].money_devided_into
-          local part_of_money = round(moneys / parts, 1)
-          notify("Оставайтесь на в хранилище, чтобы собрать еще денег.")
+          local moneys = round(math.random(bank.money[1],bank.money[2]), 1)
+          local partOfMoney = billsInWad * bill
+          local parts = math.ceil(moneys / partOfMoney)
+          notify("Stay in the vault to grab more money.")
 
           while parts > 0 do
             local player_coords = ENTITY.GET_ENTITY_COORDS( playerPed, nil )
@@ -344,20 +339,27 @@ function BanksGrabMod.tick()
                 break
             end
 
-            Stage.money = Stage.money + part_of_money
-            notify("+ $"..(part_of_money))
-            notify("Вы собрали $"..Stage.money)
+            if (moneys > partOfMoney) then
+                Stage.money = Stage.money + partOfMoney
+                moneys = moneys - partOfMoney
+            else
+                Stage.money = Stage.money + moneys
+                break
+            end
+
+            notify("You got $"..Stage.money)
+            AUDIO.PLAY_SOUND_FRONTEND(-1, "Collect_Pickup", "DLC_IE_PL_Player_Sounds", false)
+            wait(timeToGrabPartOfMoney)
             parts = parts - 1
-            wait(3000)
           end
 
-          notify("Вы взяли $"..Stage.money..", скройтесь от полиции.")    
+          notify("You grab $"..Stage.money..", get away from the cops.")    
           saveDatas ()
        end
     end         
   elseif(Stage.state==1) then
     if model ~= Stage.modelPl[2] then
-       notify(""..Stage.name[Stage.modelPl[2]].." не смог совершить ограбление.")
+       notify(""..Stage.name[Stage.modelPl[2]].." rob failed.")
        PED.SET_PED_COMPONENT_VARIATION(Stage.modelPl[1], 9, 0, 0, 0)
        nildatasavestage ()
     else
@@ -370,13 +372,13 @@ function BanksGrabMod.tick()
              local _,score = STATS.STAT_GET_INT(hash, 0, -1)
              PED.SET_PED_COMPONENT_VARIATION(playerPed, 9, 0, 0, 0) 
              AUDIO.PLAY_MISSION_COMPLETE_AUDIO("FRANKLIN_SMALL_01")
-             notify(""..Stage.name[Stage.modelPl[2]].." Удачное ограбление, всего : "..moneys.." $")
+             notify(""..Stage.name[Stage.modelPl[2]].." Robbery successful, всего : "..moneys.." $")
 			 UI.DISPLAY_CASH(true)
              STATS.STAT_SET_INT(hash, score+moneys, true)
              nildatasavestage ()
           end
        else
-             notify(""..Stage.name[Stage.modelPl[2]].." не смог совершить ограбление.")
+             notify(""..Stage.name[Stage.modelPl[2]].." rob failed.")
              PED.SET_PED_COMPONENT_VARIATION(playerPed, 9, 0, 0, 0)
              nildatasavestage ()
        end
